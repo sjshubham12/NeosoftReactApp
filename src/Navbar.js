@@ -31,7 +31,7 @@ function  Navbar(props){
               type:"CART",
               payload:response.data.data
           })
-          // props.history.push("/cart")
+          
   
           props.dispatch({
             type:"UPDATE_CART",
@@ -84,9 +84,9 @@ function  Navbar(props){
              <Link to="/cart" className="btn btn-warning my-2 my-sm-0" type="submit"><FontAwesomeIcon icon={faShoppingCart} />
         <span class="price">
           <i class="fa fa-shopping-cart"></i>
-        
-          <b>{props?.cart?.data?.length && props?.cart?.data?.length >0 ? props?.cart?.data?.length :0 }</b>
-          
+
+          <b>{props?.cart?.data?.length }</b>
+         
         </span>
         </Link>
      <button className="btn btn-danger" onClick={Logout}>Logout</button>

@@ -1,6 +1,5 @@
 import Carousel from './Caursoel';
 import Card from './Card';
-// import cakes from './data';
 import {useEffect, useState} from "react"
 import axios from "axios"
 import queryString from "query-string";
@@ -9,8 +8,7 @@ function Search(props){
     const parsed = queryString.parse(props.location.search);
    let [cakes, setCakes] = useState([])
     useEffect(()=>{ 
-        //alert("Mounted and Updated")
-        //let apiurl="https://apibyashu.herokuapp.com/api/searchcakes?q=chees"
+      
         let apiurl="https://apibyashu.herokuapp.com/api/searchcakes?q="+parsed.searchtext
         axios({
                  url: apiurl,
@@ -22,16 +20,13 @@ function Search(props){
                  console.log("error ", error)
              })
 
-    //},[]) //We want to prevent the call of componentdidupdate()
     },[props.location.search])
 
     var [cakedata, setCakeData] = useState();
     function getCakeData (data) {
-        console.log("...... getCakeData" , data)
         setCakeData(data)
     }
 
-    //console.log("cakes", cakes)
     return(
         <div>
             <Carousel></Carousel>
@@ -43,11 +38,7 @@ function Search(props){
                 })}
             </div>
 
-            {/* {cakedata && 
-                <div style={{marginTop: "150px", border:"2px solid", padding:"5px"}}>
-                    <CakeDetail cakedata={cakedata} />
-                </div>
-            } */}
+          
         </div>
     )
 }

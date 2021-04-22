@@ -9,6 +9,7 @@ import Search from './Search';
 import { connect } from "react-redux"
 import Cart from './Cart';
 import Checkout from './Checkout';
+import ForgotPassword from './forgotPassword';
 
 import { useState } from 'react'
 import {
@@ -52,6 +53,8 @@ function App(props) {
       <Route path ="/signup" exact component={Signup} ></Route>
       <Route path ="/search" exact component={Search} ></Route>
       <Route path ="/checkout"  component={Checkout} ></Route>
+      <Route path ="/forgotpassword"  component={ForgotPassword} ></Route>
+
 
       <Route path ="/cart" exact component={Cart} ></Route>
 
