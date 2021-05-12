@@ -1,6 +1,4 @@
-var carousel1 = "cake.jpeg"
-var carousel2 = "cake2.jpeg"
-var carousel3 = "cake3.jpeg"
+var carousel1 = "Mortal-Kombat.jpeg"
 
 var CarouselImage = {
     height : "400px"
@@ -12,12 +10,7 @@ function Carousel(){
                 <div class="carousel-item active">
                 <img  style = {CarouselImage} src={carousel1} class="d-block w-100" alt="..." />
                 </div>
-                <div class="carousel-item">
-                <img style = {CarouselImage} src={carousel2} class="d-block w-100" alt="..." />
-                </div>
-                <div class="carousel-item">
-                <img  style = {CarouselImage} src={carousel3} class="d-block w-100" alt="..." />
-                </div>
+                
             </div>
             <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>

@@ -6,15 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import "bootstrap/dist/js/bootstrap.bundle.min"
 import "jquery/dist/jquery.slim.min"
 import "bootstrap/dist/css/bootstrap.min.css"
-import "./ReduxStore/store"
-import { Provider } from 'react-redux';
-import Reliance from "./ReduxStore/store"
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={Reliance}>
+   
       <App ></App>
-    </Provider>
+    
   </React.StrictMode>,
   document.getElementById('root')
 );
