@@ -14,3 +14,62 @@ code {
 .form-error{
   color: red;
 }
+
+#login .container #login-row #login-column #login-box {
+  margin-top: -41px;
+  max-width: 600px;
+  height: 364px;
+  border: 1px solid #9C9C9C;
+  background-color: #EAEAEA;
+  border-radius: 30px;
+}
+
+
+#login .container #login-row #login-column #login-box #login-form {
+  padding: 20px;
+  
+}
+.container.custom-form{
+  max-width: 1800px;
+
+}
+#login .container #login-row #login-column #login-box #login-form #register-link {
+  margin-top: -85px;
+}
+.login-form-custom{
+  padding-top: 20px;
+}
+
+.checkout-link {
+ 
+  border-radius: 20px!important;
+ 
+}
+
+.cart-design{
+      border: 1px solid;
+    padding: 26px;
+    
+     border-radius: 30px;
+}
+.payment-style{
+  display: flex;
+    justify-content: space-between;
+}
+.payment-form{
+  justify-content: space-between;
+  padding-right: 15px;
+}
+.payment-input{
+  border: 0px;
+  width: 100%;
+  height: 2em;
+}
+.payment-cod{
+  position: relative;
+  left: 40px;
+  top: 6px;
+}
+.btn-data{
+  margin: 3px;
+}

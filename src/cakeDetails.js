@@ -1,93 +1,65 @@
 
+
+
+
 import {useParams} from "react-router-dom"
 import {connect} from 'react-redux'
 import {useEffect, useState} from 'react';
 import axios from 'axios'
 
-
-
 function CakeDetails(props){
+        let params = useParams()
+        
+        useEffect(()=>{
 
-//to add data to cart
-let addtoCake = (cakedetails) =>{
-    var token = localStorage.token
-        let addcakeapi="https://apibyashu.herokuapp.com/api/addcaketocart/"
-        axios({
-            method:"post",
-            url:addcakeapi,
-            data:{
-                cakeid:cakedetails.cakeid,
-                name:cakedetails.name,
-                image:cakedetails.image,
-                price:cakedetails.price,
-                weight:cakedetails.weight
-            },
-
-            headers:{
-                authtoken:token
-              }
-        }).then((response)=>{
-            if(response.data.data){
-           
-            props.dispatch({
-                type:"UPDATE_CART",
-                payload:false
-            })
-          props.history.push("/cart")
-        }else{
-            alert("Please Login")
-        }
-
-
-        },(error)=>{
-            console.log("error", error)
-        })
-    
-}
-
-    let [cakedetails, setCakedetails] = useState({})
-    let params = useParams()
-    useEffect(()=>{
-        let cakedetailsapi="https://apibyashu.herokuapp.com/api/cake/"+params.cakeid
-        axios({
-            method:"get",
-            url:cakedetailsapi
-        }).then((response)=>{
-            setCakedetails(response.data.data)
-        },(error)=>{
-            console.log("error", error)
+        props.dispatch({
+            type :"CAKEDETAILS",
+            payload:{params:params.cakeid}
         })
     },[])
 
-    
-
+    let addtoCart = () =>{
+        
+        if(localStorage.token){
+           
+            props.dispatch({
+                type :"ADDTOCART",
+                payload:{cakeid:props?.allcakesdetails.cakeid,name:props?.allcakesdetails.name,image:props?.allcakesdetails.image,weight:props?.allcakesdetails.weight,price:props?.allcakesdetails.price}
+            })
+            props.dispatch({
+            type:"UPDATE_CART",
+                payload:false
+            })
+            props.history.push("/cart")
+        }else{
+            alert('please login')
+        }
+            
+        }
     return (
         <div className="container">
-          <div className="row">
+            <div className="row">
             <div className="col-md-6">
-            <img style ={{width:"300px" , height:"350px"}} className="singleimage" src={cakedetails.image? cakedetails.image: ''} />
+                <img style ={{width:"300px" , height:"350px"}} className="singleimage" src={props?.allcakesdetails?.image} />
             </div>
             <div className="col-md-6">
-            <h1 className="display-4">{cakedetails.name}</h1>
-        
-        <hr className="my-4"/>
-        <p><b>Price:</b> {cakedetails.price} </p>
-        <p><b>Description:</b>{cakedetails.description} </p>
-        <p><b>Weight:</b>{cakedetails.weight} Kg</p>
-       
-        <button className="btn btn-primary" onClick={()=>addtoCake(cakedetails)}>Add to Cart</button>
+                <h1 className="display-4">{props?.allcakesdetails?.name}</h1>
+                <hr className="my-4"/>
+                <p><b>Price:</b> {props?.allcakesdetails?.price} </p>
+                <p><b>Description:</b>{props?.allcakesdetails?.description} </p>
+                <p><b>Weight:</b>{props?.allcakesdetails?.weight} Kg</p>
+                <button className="btn btn-primary" onClick={addtoCart}>Add to Cart</button>
             </div>
-          </div>
-       
-      </div>
-
+            </div>
+        </div>
     )
 }
 
-//export default CakeDetails;
-
-export default connect(function(state,props)
-{
-
+export default connect(function(state,props){
+   
+    return{
+        allcakesdetails:state?.allcakesdetails,
+        cartdata:state?.cartdata,
+    }
 }
 )(CakeDetails)

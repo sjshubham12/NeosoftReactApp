@@ -21,6 +21,7 @@ import {
 } from "react-router-dom";
 
 import axios from "axios"
+import Orderdetail from './Orderdetail';
 
 function App(props) {
   if(localStorage.token && !props.user){
@@ -57,7 +58,8 @@ function App(props) {
 
 
       <Route path ="/cart" exact component={Cart} ></Route>
-
+     
+      <Route path ="/myorders"  component={Orderdetail} ></Route>
 
       <Route path ="/cake/:cakeid" exact component={CakeDetails} ></Route>
 

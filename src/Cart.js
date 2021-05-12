@@ -3,130 +3,128 @@ import axios from 'axios'
 import {useState} from 'react'; 
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faShoppingCart, faTrash} from '@fortawesome/free-solid-svg-icons'
+import { Redirect } from "react-router-dom";
 
 
 function Cart(props){
- let setTotal = props?.cart?.data?.reduce((sum, {price})=>sum+price,0)
+  
+    let setTotal = props?.cart?.reduce((sum, {price})=>sum+price,0)
+    let [removed, setRemoved] = useState(false)
+    if(localStorage.token){
 
-   let [removed, setRemoved] = useState(false)
-    
     let deleteCake = (data) =>{
-       
-        var token = localStorage.token
-            let removecakeapi="https://apibyashu.herokuapp.com/api/removecakefromcart"
-            axios({
-                method:"post",
-                url:removecakeapi,
-                data:{
-                    cakeid:data  
-                },
-    
-                headers:{
-                    authtoken:token
-                  }
-            }).then((response)=>{
-
-                props.dispatch({
-                    type:"UPDATE_CART",
-                    payload:false
-                })
-
-                console.log(response)
-                setRemoved(true)
-            },(error)=>{
-                console.log("Error form removecakefromcart api", error)
-            })
-        
+      props.dispatch({
+         type :"REMOVECART",
+         payload : {cakeid:data},
+      })
+      props.dispatch({
+               type:"UPDATE_CART",
+               payload:false
+         })
     }
 
     return (
-             <div class="cart_section">
-     <div class="container-fluid">
-     
-         <div class="row">
-             
-             <div class="col-lg-8 offset-lg-1">
-                 <div class="cart_container">
-                   {props?.cart?.data &&  props?.cart?.data?.length > 0?(
-                     <div>
-                        <div class="cart_title">Shopping Cart<small> ({props?.cart?.data?.length} item in your cart) </small></div>
-                   <div class="row">
-                    <div class="col-sm-8">
-
-                        <table className="table table-bordered">
-
-                            {props?.cart?.data?.length>0 && props.cart.data.map((each)=>{
-                            return(
-                            <tr>
-                                <td><img src={each.image} alt="" width="50px" height="50px" /></td>
-                                <td>{each.name}</td>
-                                <td>₹{each.price}</td>
-                                <td><button type="button" onClick={()=>deleteCake(each.cakeid)} className="btn btn-warning">Remove</button></td>
-                            </tr>
-                            )
-                            })}
-                            
-                        </table>
-
-                     
+    <section>
+        {props?.cart &&  props?.cart?.length > 0?(
+        <div class="row" >
+           <div class="col-lg-6" style={{marginLeft:"60px" , marginTop:"35px"}}>
+           <div class="card wish-list mb-3">
+              <div class="card-body">
+                 <span>
+                    <h5 class="mb-1">
+                       <FontAwesomeIcon icon={faShoppingCart} />
+                       (<span>{props?.cart?.length}</span> items)
+                    </h5>
+                 </span>
+              </div>
+              <div class="card mb-3"></div>
+              {props?.cart?.length>0 && props.cart.map((each)=>{
+              return(
+              <div>
+                 <div class="row mb-1">
+                    <div class="col-md-5 col-lg-3 col-xl-3">
+                       <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                          <img class="img-fluid "  style={{marginLeft:"10px"}}src={each.image} alt="Sample" /> 
+                          <a href="#!">
+                          </a>
                        </div>
-
-                       <div class="col-sm-4">
-                       <table className="table table-bordered">
-                            <tr>
-                                <td>Total Items</td>
-                                <td>Total Price</td>
-                            </tr>
-                            <tr>
-                                <td>{props?.cart?.data?.length}</td>
-                                <td>{setTotal}</td>
-                            </tr>
-                        </table>
-                         
+                    </div>
+                    <div class="col-md-7 col-lg-9 col-xl-9">
+                       <div>
+                          <div class="d-flex justify-content-between">
+                             <div style={{marginLeft:"30px"}}>
+                                <h5 class="mb-3">{each.name}</h5>
+                                <p class="mb-3"><span><strong id="summary">${each.price}</strong></span></p>
+                             </div>
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center" style={{marginLeft:"30px"}}>
+                             <div>
+                                <button type="button" onClick={()=>
+                                   deleteCake(each.cakeid)} className="btn btn-danger">
+                                   <FontAwesomeIcon icon={faTrash}/>
+                                </button>
+                             </div>
+                          </div>
                        </div>
-
-                     </div>
-                     <div class="row">
-                        <div className="col-sm-10"></div>
-                        <div className="col-sm-2">
-                        <Link to="/checkout"><button type="button" class="button cart_button_checkout">Checkout</button></Link>
-                        </div>
                     </div>
-                     </div>
-                   ):(
-                    <div className="alert alert-warning container" role="alert">
-                    <h4 className="alert-heading" style={{ textAlign: "center" }}>
-                      CART IS EMPTY!
-                    </h4>
-                    <hr />
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <p>
-                        Please add some cake to cart 
-                      </p>
-        
-                    
-                    </div>
-                  </div>
-                   )}
-                 
-
-
-                   
-                     
                  </div>
-             </div>
-
-
-
-         </div>
-         
-     </div>
- </div>
+                 <div class="card mb-3">
+                 </div>
+              </div>
+              )
+              })}
+           </div>
+        </div>
+        <div class="col-md-4" >
+           <div class="card mb-3" style={{marginTop:"30px"}}>
+              <div class="card-body">
+                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                       <div>
+                          <strong>The total amount </strong>
+                       </div>
+                       <span><strong id="shadows-example-total">${setTotal}</strong></span>
+                    </li>
+                    <div class="card mb-3">
+                    </div>
+                    <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                       <div>
+                          <strong>Total Items </strong>
+                       </div>
+                       <span><strong id="shadows-example-total">{props?.cart?.length}</strong></span>
+                    </li>
+                 </ul>
+                 <Link to="/checkout">
+                 <button type="button" class="btn btn-primary btn-block waves-effect waves-light">go to checkout</button></Link>
+              </div>
+           </div>
+           <div class="card mb-3">
+           </div>
+        </div>
+        </div>
+        ):(
+        <div className="alert alert-warning container" role="alert">
+           <h4 className="alert-heading" style={{ textAlign: "center" }}>
+           CART IS EMPTY!
+           </h4>
+           <hr />
+           <div style={{ display: "flex", justifyContent: "space-between" }}>
+           <p>
+              Please add some cake to cart 
+           </p>
+        </div>
+        </div>
+        )}
+     </section>
         
     )
-    
+    }else{
+        return <Redirect to={"/"} />
+    }
 }
-//export default Cart
+
 export default connect(function(state,props)
 {
     return{

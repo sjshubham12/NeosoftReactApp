@@ -1,76 +1,87 @@
-//import {useState} from 'react'; 
+
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
-import { useRouteMatch } from "react-router";
+import { Redirect } from "react-router-dom";
 function CartSummary(props){
+    if(localStorage.token){
 
-    var route = useRouteMatch()
-    var url = route.url
-   
-    let setTotal = props?.cart?.data?.reduce((sum, {price})=>sum+price,0)
+    let setCounter = function(){
+      props.dispatch({
+        type : "ADD_COUNTER",
+        counter : 2,
+        payload : false
+      })
+      props.history.push("/checkout/address")
+    }
     return(
-        <div class="cart_section">
-     <div class="container-fluid">
-         <div class="row">
-             
-             <div class="col-lg-8 offset-lg-1">
-                 <div class="cart_container">
-                 <div class="cart_title">Your Cart<small> ({props?.cart?.data?.length} item in your cart) </small></div>
-                   <div class="row">
-                    <div class="col-sm-8">
-
-                        <table className="table table-bordered">
-
-                            {props?.cart?.data?.length>0 && props?.cart?.data.map((each)=>{
+      <div>
+        <div class="pb-5">
+          {props?.cart &&  props?.cart?.length > 0?(
+          <div class="container">
+              <div class="row" style ={{marginRight:"100px"}}>
+                <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+                    <div class="table-responsive cart-design">
+                      <table class="table">
+                          <thead>
+                            <tr >
+                                <th scope="col" class="border-0 bg-light" style={{width:"20px"}}>
+                                  <div class="p-2 px-3 text-uppercase">Product</div>
+                                </th>
+                                <th scope="col" class="border-0 bg-light" style={{width:"20px"}}>
+                                  <div class="p-2 px-3 text-uppercase">Name</div>
+                                </th>
+                                <th scope="col" class="border-0 bg-light" style={{width:"20px"}}>
+                                  <div class="py-2 text-uppercase">Price</div>
+                                </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {props?.cart?.length>0 && props?.cart.map((each)=>{
                             return(
                             <tr>
-                                <td><img src={each.image} alt="" width="50px" height="50px" /></td>
-                                <td>{each.name}</td>
-                                <td>₹{each.price}</td>
-                                
+                                <th >
+                                  <div class="p-1">
+                                      <img src={each.image} alt="" style={{width:"100px"}} class="img-fluid rounded shadow-sm" />
+                                  </div>
+                                </th>
+                                <td class="border-0 align-middle"><strong>{each.name}</strong></td>
+                                <td class="border-0 align-middle"><strong>${each.price}</strong></td>
                             </tr>
                             )
                             })}
-                            
-                        </table>
-
-                     
-                       </div>
-
-                       <div class="col-sm-4">
-                       <table className="table table-bordered">
-                            <tr>
-                                <td>Total Items</td>
-                                <td>Total Price</td>
-                            </tr>
-                            <tr>
-                                <td>{props?.cart?.data?.length}</td>
-                                <td>{setTotal}</td>
-                            </tr>
-                        </table>
-                         
-                       </div>
-
-                     </div>
-
-
-                     
-                 </div>
-             </div>
-
-
-
-         </div>
-     </div>
- </div>
+                          </tbody>
+                      </table>
+                      {!props?.updatecounter &&
+                      <button class="btn btn-outline-primary" onClick={setCounter}>Next</button> }
+                    </div>
+                </div>
+              </div>
+          </div>
+          ):(
+          <div className="alert alert-warning container" role="alert">
+              <h4 className="alert-heading" style={{ textAlign: "center" }}>
+              CART IS EMPTY!
+              </h4>
+              <hr />
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <p>
+                Please add some cake to cart 
+              </p>
+          </div>
+        </div>
+        )}
+    </div>
+   </div>
     )
+    }else{
+        return <Redirect to={"/"} />
+    }
 }
-//export default CartSummary
+
 export default connect(function(state,props)
 {
     return{
         cart:state?.cart,
-       
+        updatecounter:state?.updatecounter,
     }
 }
 )(CartSummary)

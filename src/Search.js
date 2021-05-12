@@ -9,7 +9,7 @@ function Search(props){
    let [cakes, setCakes] = useState([])
     useEffect(()=>{ 
       
-        let apiurl="https://apibyashu.herokuapp.com/api/searchcakes?q="+parsed.searchtext
+        let apiurl="https://apifromashu.herokuapp.com/api/searchcakes?q="+parsed.searchtext
         axios({
                  url: apiurl,
                  method:"get"
@@ -30,7 +30,6 @@ function Search(props){
     return(
         <div>
             <Carousel></Carousel>
-
             <div className="row">
                 {/* must be pass key */}
                 {cakes?.length>0 && cakes.map((each, index)=>{
@@ -38,7 +37,6 @@ function Search(props){
                 })}
             </div>
 
-          
         </div>
     )
 }
