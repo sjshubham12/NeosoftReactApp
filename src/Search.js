@@ -30,6 +30,7 @@ function Search(props){
     return(
         <div>
             <Carousel></Carousel>
+
             <div className="row">
                 {/* must be pass key */}
                 {cakes?.length>0 && cakes.map((each, index)=>{
@@ -37,6 +38,7 @@ function Search(props){
                 })}
             </div>
 
+          
         </div>
     )
 }

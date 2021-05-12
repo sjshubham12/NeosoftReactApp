@@ -38,13 +38,24 @@ function Login(props){
     }
 
     
+    var user = {}
+    var [error,setError]=useState()
    
     var [user, setUser]=useState({})
-    
-    let getLoginData=(event)=>{
-        let name=event.target.name
-        let value=event.target.value
-        setUser({...user,[name]:value})
+    let getEmail=(event)=>{
+         setUser({
+            ...user,
+            email:event.target.value
+        }) 
+        user.email=event.target.value;
+    }
+
+    let getPassword=(event)=>{
+         setUser({
+            ...user,
+            password:event.target.value
+        }) 
+        user.password=event.target.value;
     }
 
     let login=function(){
@@ -53,13 +64,18 @@ function Login(props){
             if(errors){
                     SetformErrors(errors)
                     }else{
-                SetformErrors({})
+            SetformErrors({})
         
                 props.dispatch({
                     type:"LOGIN",
                     payload:user
                 })
-            }
+
+              
+                
+                
+                
+        }
     }
     return(
        
@@ -73,17 +89,17 @@ function Login(props){
                             <h2 class="text-center login-form-custom">Login</h2>
                             <div class="form-group">
                                 <label for="email">Email:</label><br />
-                                <input type="text" name="email" id="email"  onChange={getLoginData}  class="form-control" />
+                                <input type="text" name="email" id="email"  onChange={getEmail}  class="form-control" />
                                 {formErrors?.email && <div className="form-error">  {formErrors.email}</div> }
 
                             </div>
                             <div class="form-group">
                                 <label for="password">Password:</label><br />
-                                <input type="password" name="password" id="password" onChange={getLoginData} class="form-control" />
+                                <input type="password" name="password" id="password" onChange={getPassword} class="form-control" />
                                 {formErrors?.password && <div className="form-error"> {formErrors.password}</div> }
 
                             </div>
-                            { props?.error &&<div className="text-danger" style={{color:"red"}}>
+                            { props.error &&<div className="text-danger" style={{color:"red"}}>
                                     Invalid Credentials    
 
                             </div> }

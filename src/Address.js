@@ -1,13 +1,18 @@
 import { useState } from "react"
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import axios from 'axios'
 
 function Address(props){
 
     var [formErrors , SetformErrors] = useState({})
+    
     var OrderData = {}
     var [OrderData , setAddressformdata] = useState({})
-        
+   
+
+    // console.log("data of place order",OrderData)
+            
     if(localStorage.token){
         var Validate = function(elements){
         var errors = {} 
@@ -41,12 +46,12 @@ function Address(props){
 
 
     
-    let setTotal = props?.cart?.reduce((sum, {price})=>sum+price,0)
+    let setTotal = props?.cart?.data?.reduce((sum, {price})=>sum+price,0)
 
     let getAddData=(event)=>{
         let name=event.target.name
         let value=event.target.value
-        setAddressformdata({...OrderData,[name]:value,price: setTotal,cakes: props?.cart})
+        setAddressformdata({...OrderData,[name]:value,price: setTotal,cakes: props?.cart?.data})
     }
 
     let PlaceOrder = function(){

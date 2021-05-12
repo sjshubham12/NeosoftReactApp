@@ -2,10 +2,9 @@
 import axios from "axios"
 import {useState} from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import {connect} from "react-redux"
 
 
-function Signup (props){
+function Signup (){
     var [formErrors , SetformErrors] = useState({})
 
     var validateregister = function(elements){
@@ -31,29 +30,41 @@ function Signup (props){
         else
         return false 
     }
+    var user = {}
 
-    var [user, setUser]=useState({})
-
-    let getRegisterData=(event)=>{
-        let name=event.target.name
-        let value=event.target.value
-        setUser({...user,[name]:value})
+    let getEmail=(event)=>{
+        user.email=event.target.value;
     }
+
+    let getPassword=(event)=>{
+        
+        user.password=event.target.value;
+    }
+
+    let getName=(event)=>{
+     
+        user.name =event.target.value;
+    }
+
 
 
     let register =function(){
         var form = document.getElementById('register_form');
         var errors = validateregister(form.elements)
+        var baseurl = process.env.REACT_APP_BASE_URL;
 
         if(errors){
             SetformErrors(errors)
        }else{
-            props.dispatch({
-                type :"REGISTER",
-                payload : user
+            axios({
+                url : baseurl+'/api/register',
+                method : "Post",
+                data : user
+            }).then((response)=>{
+                console.log("Respone" , response.data)
+            },(error)=>{
+                console.log("error",error)
             })
-
-           
        }
     }
     
@@ -70,29 +81,40 @@ function Signup (props){
                             <h2 class="text-center login-form-custom">Sign up</h2>
                             <div class="form-group">
                                 <label for="email">Email:</label><br />
-                                <input type="text" name="email" id="email"  onChange={getRegisterData}  class="form-control" />
+                                <input type="text" name="email" id="email"  onChange={getEmail}  class="form-control" />
                                 {formErrors?.email && <div className="form-error">  {formErrors.email}</div> }
 
                             </div>
                             <div class="form-group">
                                 <label for="password">Password:</label><br />
-                                <input type="password" name="password" id="password" onChange={getRegisterData} class="form-control" />
+                                <input type="password" name="password" id="password" onChange={getPassword} class="form-control" />
                                 {formErrors?.password && <div className="form-error"> {formErrors.password}</div> }
 
                             </div>
                             <div class="form-group">
                                 <label for="email">Name:</label><br />
-                                <input type="text" name="name" id="name"  onChange={getRegisterData}  class="form-control" />
+                                <input type="text" name="name" id="name"  onChange={getName}  class="form-control" />
                                 {formErrors?.name && <div className="form-error">  {formErrors.name}</div> }
 
                             </div>
                             
-                    </form>
-                      
+                         
+                          
+                        </form>
+                        {/* <div style={{float:'right'}}>
+                        <Link to="/forgot">Forgot Password ?</Link>
+                    </div>
+                    <div>
+                        <Link to="/signup">New User? Click here</Link>
+                    </div>
+                     */}
                      <div class="text-center">
                               <button className="btn btn-primary" onClick={register}>Sign up</button>
+
                         </div>
+                       
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -102,8 +124,4 @@ function Signup (props){
     
 }
 
-export default connect(function(state,props){
-    return {
-
-    }
-})(Signup) 
+export default Signup

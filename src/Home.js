@@ -1,27 +1,18 @@
-<<<<<<< HEAD
-function * withYield(a) {
-  let b = 5;
-  yield a + b;
-  b = 6; // it will be re-assigned after first execution
-  yield a * b;
-=======
-
-import Video from "./Video";
-import axios from "axios"
 import Carousel from "./Caursoel";
-
+import Card from "./Card";
+import axios from "axios"
 import { useState ,useEffect } from "react";
 import { error } from "jquery";
 function Home(){
-    let [videos, setVideo] = useState([])
-    var baseurl = "http://localhost:5000"
+    let [cakes, setCakes] = useState([])
+    var baseurl = process.env.REACT_APP_BASE_URL;
     useEffect(()=>{
         axios({
             method : "get",
-            url : baseurl+'/api/allassets',
+            url : baseurl+'/api/allcakes',
         }).then((response)=>{
-            console.log("response from all assets video",response.data)
-            setVideo(response.data.videos)
+           
+            setCakes(response.data.data)
         },(error)=>{
             console.log("error from all cakes api",error)
         })
@@ -31,8 +22,8 @@ function Home(){
             <Carousel />
             <div className="row">
            
-            {videos?.length>0 && videos.map((each,index)=>{
-                return (<Video videodata={each} index={index} />)
+            {cakes?.length>0 && cakes.map((each,index)=>{
+                return (<Card cakedata={each} index={index} />)
             })}
             </div>
 
@@ -40,10 +31,6 @@ function Home(){
             
         </div>
     )
->>>>>>> 6f434fea7d6a366b15568abae4cdce6cad51b4e7
 }
 
-const calcSix = withYield(6);
-
-console.log("shubham value",calcSix.next().value); // 11
-console.log("value of jain",calcSix.next().value); // 36
+export default Home

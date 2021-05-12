@@ -17,7 +17,6 @@ var demo = function(state ={
           
             return state
         }
-    
         case "LOGIN_FAILURE" :{
             state = {...state}
             state["is_fetch"] = false
@@ -25,75 +24,6 @@ var demo = function(state ={
 
             return state
         }
-
-
-        case "REGISTER" :{
-            state = {...state}
-            state["is_fetch"] =true
-            return state
-        }
-        case "REGISTER_SUCCESS" :{
-            state = {...state}
-            state["user"] = action.payload
-            state["is_fetch"] = false
-            
-          
-            return state
-        }
-    
-        case "REGISTER_FAILURE" :{
-            state = {...state}
-            state["is_fetch"] = false
-            return state
-        }
-
-
-        case "ALLCAKES" :{
-            state = {...state}
-            state["is_fetch"] =true
-            return state
-        }
-        case "ALLCAKES_SUCCESS" :{
-            state = {...state}
-            state["allcakes"] = action.payload
-            state["is_fetch"] = false
-            return state
-        }
-
-        case "ADDTOCART" :{
-            state = {...state}
-            state["is_fetch"] =true
-            return state
-        }
-        case "ADDTOCART_SUCCESS" :{
-            state = {...state}
-            state["cartdata"] = action.payload
-            state["is_fetch"] = false
-          
-            return state
-        }
-
-        case "ADDTOCART_FAILURE" :{
-            state = {...state}
-            state["is_fetch"] = false
-            return state
-        }
-
-
-        case "CAKEDETAILS" :{
-            state = {...state}
-            state["is_fetch"] =true
-            return state
-        }
-        case "CAKEDETAILS_SUCCESS" :{
-            state = {...state}
-            state["allcakesdetails"] = action.payload
-            state["is_fetch"] = false
-            return state
-        }
-
-
-
         case "INTIALIZE" :{
             state = {...state}
             state["is_Login"] =true
@@ -118,7 +48,7 @@ var demo = function(state ={
         state = {...state}
         state["orderdetails"] = action.payload
         return state
-        }
+    }
 
         case "ADD_COUNTER":{
             state = {...state}
@@ -126,34 +56,12 @@ var demo = function(state ={
             return state
         }
         
-        case "CART" :{
+    
+        case "CART":{
             state = {...state}
-            state["is_fetch"] =true
-            return state
-        }
-        case "CART_SUCCESS" :{
-            state = {...state}
-            state["cart"] = action.payload
-            state["is_fetch"] = false
-            return state
-        }
-
-        case "CART_FAILURE" :{
-            state = {...state}
-            state["is_fetch"] = false
-            return state
-        }
-
-
-        case "REMOVECART" :{
-            state = {...state}
-            state["is_fetch"] =true
-            return state
-        }
-        case "REMOVECART_SUCCESS" :{
-            state = {...state}
-            state["is_fetch"] = false
-            return state
+            state["cart"] = { data:action.payload}
+         
+           return state
         }
 
         case "PLACEORDER":{
