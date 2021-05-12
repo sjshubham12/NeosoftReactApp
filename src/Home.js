@@ -1,18 +1,20 @@
-import Carousel from "./Caursoel";
-import Card from "./Card";
+
+import Video from "./Video";
 import axios from "axios"
+import Carousel from "./Caursoel";
+
 import { useState ,useEffect } from "react";
 import { error } from "jquery";
 function Home(){
-    let [cakes, setCakes] = useState([])
-    let getAllCakes = "https://apibyashu.herokuapp.com/api/allcakes"
+    let [videos, setVideo] = useState([])
+    var baseurl = "http://localhost:5000"
     useEffect(()=>{
         axios({
             method : "get",
-            url : getAllCakes,
+            url : baseurl+'/api/allassets',
         }).then((response)=>{
-           
-            setCakes(response.data.data)
+            console.log("response from all assets video",response.data)
+            setVideo(response.data.videos)
         },(error)=>{
             console.log("error from all cakes api",error)
         })
@@ -22,8 +24,8 @@ function Home(){
             <Carousel />
             <div className="row">
            
-            {cakes?.length>0 && cakes.map((each,index)=>{
-                return (<Card cakedata={each} index={index} />)
+            {videos?.length>0 && videos.map((each,index)=>{
+                return (<Video videodata={each} index={index} />)
             })}
             </div>
 
