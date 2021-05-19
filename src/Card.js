@@ -3,7 +3,7 @@ function Card(props){
 
     return (
         
-            <div class="card" style={{width:"20.4rem"}}>
+            <div class="card col-md-3" style={{width:"20.4rem" ,marginTop:"25px"}}>
             <Link to={'cake/'+props.cakedata.cakeid}><img src={props.cakedata.image} style={{height : "200px"}} class="card-img-top" alt="..."/></Link>
             <div class="card-body">
             <h5 class="card-title">{props.cakedata.name}</h5>

@@ -7,6 +7,7 @@ import queryString from "query-string";
 function Search(props){
     const parsed = queryString.parse(props.location.search);
    let [cakes, setCakes] = useState([])
+   
     useEffect(()=>{ 
       
         let apiurl="https://apifromashu.herokuapp.com/api/searchcakes?q="+parsed.searchtext

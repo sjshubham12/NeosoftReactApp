@@ -5,10 +5,12 @@ import { connect } from "react-redux";
 import axios from 'axios'
 
 function Orderdetail(props){
-  //let [orderdetails, setOrderdetails] = useState({})
+  let [loading,SetLoading] = useState(false)
+
     useEffect(() =>{
         var token = localStorage.token
         var baseurl = process.env.REACT_APP_BASE_URL;
+        
           axios({
               method:'post',
               url : baseurl+'/api/cakeorders',
@@ -16,7 +18,7 @@ function Orderdetail(props){
                 authtoken:token
               }
             }).then((response)=>{
-             
+              SetLoading(true)
               props.dispatch({
                 type:"CAKE_ORDER",
                 payload:response.data
@@ -24,26 +26,27 @@ function Orderdetail(props){
     
           
             }, (error)=>{
-          console.log("error from get user details api", error)
             })
           },[])
     return (
-
-        
+        <div>
+        {loading?(
            
-        <div className="container cart-design" style={{marginTop:"17px"}}>
+        <div className="container cart-design" style={{marginLeft:"50px" ,marginTop:"17px" , width:"1100px"}}>
+        {props?.orderdetails &&  props?.orderdetails?.length > 0?(
+
     <article className="card">
-        <header className="card-header"> My Orders </header>
+        <header className="card-header" style={{textAlign:"center"}}> My Orders </header>
         <table class="table">
               <thead>
                 <tr >
-                  <th  >
+                  <th   style={{paddingLeft: "100px"}}>
                     Product
                   </th>
-                  <th class="text-left"  style={{paddingRight: "30px"}}>
+                  <th  style={{paddingRight: "200px"}}>
                    Name
                   </th>
-                  <th class="text-left">
+                  <th   style={{paddingRight: "278px"}}>
                     Price
                   </th>
                  
@@ -58,25 +61,18 @@ function Orderdetail(props){
            
                 {each.cakes.map((cakeitem)=>{
                     return(
-                //     <li className="col-md-4">
-                //     <figure className="itemside mb-3">
-                //         <div className="aside"><img src={cakeitem.image} width="200px" className="img-sm border" /></div>
-                //         <figcaption className="info align-self-center">
-                //             <p className="title">{cakeitem.name} <br /> Payment : {each.mode}</p> <span className="text-muted">Price {cakeitem.price} </span>
-                //         </figcaption>
-                //     </figure>
-                // </li>
+        
                 <tr>
-                <td >
+                <td style={{paddingLeft: "100px"}}>
                  
                     <img src={cakeitem.image} alt="" style={{width:"100px"}} class="img-fluid rounded shadow-sm" />
                     
                 
                   
                 </td>
-                <td ><strong>{cakeitem.name}</strong></td>
+                <td style={{position: "relative",left:"200px"}} ><strong>{cakeitem.name}</strong></td>
 
-                <td ><strong>${cakeitem.price}</strong></td>
+                <td style={{position: "relative",left:"350px"}}><strong>${cakeitem.price}</strong></td>
                 </tr>
                 )
                 })}
@@ -89,14 +85,36 @@ function Orderdetail(props){
          </tbody>
             </table>
     </article>
+    ):(
+      
+     
+      <h2 style={{textAlign: "center" }}>
+        <p>
+          Please make some order
+        </p>
+
+      
+      </h2>
+    
+     )}
+   
 </div>
+
+):(
+  <div class="d-flex justify-content-center">
+<div class="spinner-border text-primary m-5"  style = {{width: "200px" ,height: "200px"}} role="status">
+  <span class="sr-only">Loading...</span>
+  </div>
+</div>
+)}
+</div>
+
         )
     }
 
 
 
 export default connect((state,props)=>{
-    console.log(" reducer order details page",state)
     return {
         orderdetails:state?.orderdetails?.cakeorders
 

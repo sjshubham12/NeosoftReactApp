@@ -9,6 +9,7 @@ import { Redirect } from "react-router-dom";
 
 
 function Cart(props){
+    
     let setTotal = props?.cart?.data?.reduce((sum, {price})=>sum+price,0)
     let [removed, setRemoved] = useState(false)
 
@@ -43,6 +44,7 @@ function Cart(props){
     }
 
     return (
+        <div>
     <section>
         {props?.cart?.data &&  props?.cart?.data?.length > 0?(
         <div class="row" >
@@ -59,6 +61,7 @@ function Cart(props){
                     <div class="card mb-3"></div>
                     {props?.cart?.data?.length>0 && props.cart.data.map((each)=>{
                          return(
+                             
                              <div>
                                     <div class="row mb-1">
                     <div class="col-md-5 col-lg-3 col-xl-3">
@@ -149,6 +152,7 @@ function Cart(props){
            )}
          
     </section>
+    </div>
         
     )
     }else{

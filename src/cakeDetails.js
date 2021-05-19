@@ -46,6 +46,8 @@ let addtoCake = (cakedetails) =>{
 }
 
     let [cakedetails, setCakedetails] = useState({})
+    let [loading,SetLoading] = useState(false)
+
     let params = useParams()
     useEffect(()=>{
         let cakedetailsapi="https://apifromashu.herokuapp.com/api/cake/"+params.cakeid
@@ -53,6 +55,8 @@ let addtoCake = (cakedetails) =>{
             method:"get",
             url:cakedetailsapi
         }).then((response)=>{
+            SetLoading(true)
+
             setCakedetails(response.data.data)
         },(error)=>{
             console.log("error", error)
@@ -62,7 +66,9 @@ let addtoCake = (cakedetails) =>{
     
 
     return (
+        
         <div className="container">
+            {loading?(
           <div className="row">
             <div className="col-md-6">
             <img style ={{width:"300px" , height:"350px"}} className="singleimage" src={cakedetails.image? cakedetails.image: ''} />
@@ -78,8 +84,15 @@ let addtoCake = (cakedetails) =>{
         <button className="btn btn-primary" onClick={()=>addtoCake(cakedetails)}>Add to Cart</button>
             </div>
           </div>
-       
+        ):(
+            <div class="d-flex justify-content-center">
+         <div class="spinner-border text-primary m-5"  style = {{width: "200px" ,height: "200px"}} role="status">
+            <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        )}
       </div>
+     
 
     )
 }

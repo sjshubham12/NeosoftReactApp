@@ -5,6 +5,7 @@ import { useRouteMatch } from "react-router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Redirect } from "react-router-dom";
 function CartSummary(props){
+  
   console.log("props of checkout",props.updatecounter)
     if(localStorage.token){
    
