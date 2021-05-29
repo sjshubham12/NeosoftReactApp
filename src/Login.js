@@ -1,7 +1,4 @@
 
-
-
-import axios from 'axios'
 import {useState} from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import {connect} from "react-redux"
@@ -37,102 +34,77 @@ function Login(props){
         return false 
     }
 
-    
     var user = {}
     var [error,setError]=useState()
    
     var [user, setUser]=useState({})
-    let getEmail=(event)=>{
-         setUser({
-            ...user,
-            email:event.target.value
-        }) 
-        user.email=event.target.value;
+    
+    let getLoginData=(event)=>{
+        let name=event.target.name
+        let value=event.target.value
+        setUser({...user,[name]:value})
     }
 
-    let getPassword=(event)=>{
-         setUser({
-            ...user,
-            password:event.target.value
-        }) 
-        user.password=event.target.value;
-    }
 
     let login=function(){
         var form = document.getElementById('loginform');
-            var errors = validateLogin(form.elements)
-            if(errors){
-                    SetformErrors(errors)
-                    }else{
-            SetformErrors({})
+        var errors = validateLogin(form.elements)
+        if(errors){
+        SetformErrors(errors)
+        }else{
+        SetformErrors({})
+        props.dispatch({
+            type:"LOGIN",
+            payload:user
+        })
         
-                props.dispatch({
-                    type:"LOGIN",
-                    payload:user
-                })
-
-              
-                
-                
-                
         }
     }
     return(
-       
-            <div id="login">
+    <div id="login">
         <h3 class="text-center text-white pt-5 ">Login form</h3>
         <div class="container custom-form ">
-            <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-6">
-                    <div id="login-box" class="col-md-12">
-                        <form id="loginform"> 
-                            <h2 class="text-center login-form-custom">Login</h2>
-                            <div class="form-group">
-                                <label for="email">Email:</label><br />
-                                <input type="text" name="email" id="email"  onChange={getEmail}  class="form-control" />
-                                {formErrors?.email && <div className="form-error">  {formErrors.email}</div> }
-
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password:</label><br />
-                                <input type="password" name="password" id="password" onChange={getPassword} class="form-control" />
-                                {formErrors?.password && <div className="form-error"> {formErrors.password}</div> }
-
-                            </div>
-                            { props.error &&<div className="text-danger" style={{color:"red"}}>
-                                    Invalid Credentials    
-
-                            </div> }
-                         
-                          
-                        </form>
-                        {/* <div style={{float:'right'}}>
-                        <Link to="/forgot">Forgot Password ?</Link>
+           <div id="login-row" class="row justify-content-center align-items-center">
+              <div id="login-column" class="col-md-6">
+                 <div id="login-box" class="col-md-12">
+                    <form id="loginform">
+                       <h2 class="text-center login-form-custom">Login</h2>
+                       <div class="form-group">
+                          <label for="email">Email:</label><br />
+                          <input type="text" name="email" id="email"  onChange={getLoginData}  class="form-control" />
+                          {formErrors?.email && 
+                          <div className="form-error">  {formErrors.email}</div>
+                          }
+                       </div>
+                       <div class="form-group">
+                          <label for="password">Password:</label><br />
+                          <input type="password" name="password" id="password" onChange={getLoginData} class="form-control" />
+                          {formErrors?.password && 
+                          <div className="form-error"> {formErrors.password}</div>
+                          }
+                       </div>
+                       { props?.error &&
+                       <div className="text-danger" style={{color:"red"}}>
+                          Invalid Credentials    
+                       </div>
+                       }
+                    </form>
+                    <div class="text-center">
+                       <button className="btn btn-primary "  onClick={login}>Login</button>
                     </div>
-                    <div>
-                        <Link to="/signup">New User? Click here</Link>
+                    <div id="register-link" class="" style={{float:'left'}}>
+                       <Link to="/signup">
+                       <a >New User ? Register here</a></Link>
                     </div>
-                     */}
-                     <div class="text-center">
-                        <button className="btn btn-primary "  onClick={login}>Login</button>
-
-                        </div>
-                       <div id="register-link" class="" style={{float:'left'}}>
-                               <Link to="/signup"><a >New User ? Register here</a></Link>
-                            </div>
-                        
-                         <div style={{float:'right'}}>
-                        <Link to="/forgotpassword">Forgot Password ?</Link>
+                    <div style={{float:'right'}}>
+                       <Link to="/forgotpassword">
+                       Forgot Password ?</Link>
                     </div>
-                        
-
-                    </div>
-                </div>
-            </div>
+                 </div>
+              </div>
+           </div>
         </div>
-    </div>
-         
-            
+     </div>
         
     )
 }

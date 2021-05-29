@@ -7,6 +7,7 @@ import queryString from "query-string";
 function Search(props){
     const parsed = queryString.parse(props.location.search);
    let [cakes, setCakes] = useState([])
+   let [loading,SetLoading] = useState(false)
    
     useEffect(()=>{ 
       
@@ -15,6 +16,7 @@ function Search(props){
                  url: apiurl,
                  method:"get"
              }).then((response)=>{
+                SetLoading(true)
                 
                  setCakes(response.data.data)
              }, (error)=>{

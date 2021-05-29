@@ -33,13 +33,11 @@ function App(props) {
         authToken : token
       }
     }).then((response)=>{
-      console.log("response from api",response)
       props.dispatch({
         type : "INTIALIZE",
         payload : response.data.data
       })
     },(error)=>{
-      console.log("error",error)
     })
   }
   var [login,setLogin]=useState(false);
@@ -55,14 +53,9 @@ function App(props) {
       <Route path ="/search" exact component={Search} ></Route>
       <Route path ="/checkout"  component={Checkout} ></Route>
       <Route path ="/forgotpassword"  component={ForgotPassword} ></Route>
-
-
       <Route path ="/cart" exact component={Cart} ></Route>
-     
       <Route path ="/myorders"  component={Orderdetail} ></Route>
-
       <Route path ="/cake/:cakeid" exact component={CakeDetails} ></Route>
-
       <Route path ="/*" >
         <Redirect to="/"></Redirect>
       </Route>

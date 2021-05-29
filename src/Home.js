@@ -1,44 +1,44 @@
 import Carousel from "./Caursoel";
-import Card from "./Card";
-import axios from "axios"
-import { useState ,useEffect } from "react";
-import { error } from "jquery";
-function Home(){
-    let [cakes, setCakes] = useState([])
-    let [loading,SetLoading] = useState(false)
-    var baseurl = process.env.REACT_APP_BASE_URL;
+import {useEffect } from "react";
+import {connect} from "react-redux"
+import { Link } from "react-router-dom";
+import Loader from "./Loader";
+
+function Home(props){
     useEffect(()=>{
-        axios({
-            method : "get",
-            url : baseurl+'/api/allcakes',
-        }).then((response)=>{
-            SetLoading(true)
-            setCakes(response.data.data)
-        },(error)=>{
-            console.log("error from all cakes api",error)
+        props.dispatch({
+            type:"ALLCAKES",
+            payload:false
         })
     }, [])
-    return (
-        <div>
-            <Carousel />
-            {loading?(
-            <div className="row">
-           
-            {cakes?.length>0 && cakes.map((each,index)=>{
-                return (<Card cakedata={each} index={index} />)
-            })}
-            </div>
 
-            ):(
-                <div class="d-flex justify-content-center">
-             <div class="spinner-border text-primary m-5"  style = {{width: "200px" ,height: "200px"}} role="status">
-                <span class="sr-only">Loading...</span>
+    return (
+    <div>
+        <Carousel />
+        {props.is_fetch== false ?(
+        <div className="row">
+            {props.allcakes?.length>0 && props.allcakes.map((each,index)=>{
+                return (
+                <div class="card col-md-3" style={{width:"20.4rem" ,marginTop:"25px"}}>
+                    <Link to={'cake/'+each.cakeid}>
+                    <img src={each.image} style={{height : "200px"}} class="card-img-top" alt="..."/></Link>
+                    <div class="card-body">
+                        <h5 class="card-title">{each.name}</h5>
+                    </div>
                 </div>
-              </div>
-            )}
-            
+                )
+            })}
         </div>
+        ):(
+        <Loader/>
+        )} 
+    </div>
     )
 }
 
-export default Home
+export default connect((state,props)=>{
+    return {
+        allcakes:state?.allcakes,
+        is_fetch:state?.is_fetch,
+    }
+})(Home)

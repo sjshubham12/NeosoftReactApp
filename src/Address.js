@@ -46,12 +46,12 @@ function Address(props){
 
 
     
-    let setTotal = props?.cart?.data?.reduce((sum, {price})=>sum+price,0)
+    let setTotal = props?.cakecart?.reduce((sum, {price})=>sum+price,0)
 
     let getAddData=(event)=>{
         let name=event.target.name
         let value=event.target.value
-        setAddressformdata({...OrderData,[name]:value,price: setTotal,cakes: props?.cart?.data})
+        setAddressformdata({...OrderData,[name]:value,price: setTotal,cakes: props?.cakecart})
     }
 
     let PlaceOrder = function(){
@@ -132,6 +132,7 @@ function Address(props){
 
 export default connect (function(state ,props){
     return {
-        cart:state?.cart
+        cakecart:state?.cakecart,
+
     }
 })(Address)

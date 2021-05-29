@@ -2,105 +2,62 @@
 import {useParams} from "react-router-dom"
 import {connect} from 'react-redux'
 import {useEffect, useState} from 'react';
-import axios from 'axios'
-
-
+import Loader from "./Loader";
 
 function CakeDetails(props){
-
-//to add data to cart
-let addtoCake = (cakedetails) =>{
-    var baseurl = process.env.REACT_APP_BASE_URL;
     var token = localStorage.token
-        axios({
-            method:"post",
-            url : baseurl+'/api/addcaketocart',
-            data:{
-                cakeid:cakedetails.cakeid,
-                name:cakedetails.name,
-                image:cakedetails.image,
-                price:cakedetails.price,
-                weight:cakedetails.weight
-            },
+    let addtoCake = () =>{
+        props.dispatch({
+            type : "ADDTOCART",
+            payload: props?.cakedetail
 
-            headers:{
-                authtoken:token
-              }
-        }).then((response)=>{
-            if(response.data.data){
-           
-            props.dispatch({
-                type:"UPDATE_CART",
-                payload:false
-            })
-          props.history.push("/cart")
+        })
+        if(token){
+        props.history.push("/cart")
+
         }else{
             alert("Please Login")
         }
-
-
-        },(error)=>{
-            console.log("error", error)
-        })
-    
-}
-
-    let [cakedetails, setCakedetails] = useState({})
-    let [loading,SetLoading] = useState(false)
+       
+    }
 
     let params = useParams()
     useEffect(()=>{
-        let cakedetailsapi="https://apifromashu.herokuapp.com/api/cake/"+params.cakeid
-        axios({
-            method:"get",
-            url:cakedetailsapi
-        }).then((response)=>{
-            SetLoading(true)
-
-            setCakedetails(response.data.data)
-        },(error)=>{
-            console.log("error", error)
+        props.dispatch({
+            type : "CAKEDETAIL",
+            payload: {params:params.cakeid}
         })
     },[])
 
-    
-
     return (
-        
         <div className="container">
-            {loading?(
-          <div className="row">
+            {props?.is_fetch== false ?(
+        <div className="row">
             <div className="col-md-6">
-            <img style ={{width:"300px" , height:"350px"}} className="singleimage" src={cakedetails.image? cakedetails.image: ''} />
+                <img style ={{width:"300px" , height:"350px"}} className="singleimage" src={props?.cakedetail?.image? props?.cakedetail?.image: ''} />
             </div>
             <div className="col-md-6">
-            <h1 className="display-4">{cakedetails.name}</h1>
-        
-        <hr className="my-4"/>
-        <p><b>Price:</b> {cakedetails.price} </p>
-        <p><b>Description:</b>{cakedetails.description} </p>
-        <p><b>Weight:</b>{cakedetails.weight} Kg</p>
-       
-        <button className="btn btn-primary" onClick={()=>addtoCake(cakedetails)}>Add to Cart</button>
+                <h1 className="display-4">{props?.cakedetail?.name}</h1>
+                <hr className="my-4"/>
+                <p><b>Price:</b> {props?.cakedetail?.price} </p>
+                <p><b>Description:</b>{props?.cakedetail?.description} </p>
+                <p><b>Weight:</b>{props?.cakedetail?.weight} Kg</p>
+                <button className="btn btn-primary" onClick={()=>addtoCake()}>Add to Cart</button>
             </div>
-          </div>
+        </div>
         ):(
-            <div class="d-flex justify-content-center">
-         <div class="spinner-border text-primary m-5"  style = {{width: "200px" ,height: "200px"}} role="status">
-            <span class="sr-only">Loading...</span>
-            </div>
-          </div>
-        )}
-      </div>
-     
-
+        <Loader/>
+        )} 
+        </div>
     )
 }
 
-//export default CakeDetails;
-
 export default connect(function(state,props)
 {
-
+    return {
+        cakedetail:state?.cakedetail,
+        is_fetch:state?.is_fetch,
+    }
+    
 }
 )(CakeDetails)
